@@ -11,7 +11,7 @@ public class Claim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Assume claim relates to lost or found item — you can adjust according to your design
+
     @Column(name = "item_id", nullable = false)
     private Long itemId;
 
@@ -38,7 +38,7 @@ public class Claim {
         this.notes = notes;
     }
 
-    // Getters and setters
+
 
     public Long getId() {
         return id;

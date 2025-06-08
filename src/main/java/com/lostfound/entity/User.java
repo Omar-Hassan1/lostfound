@@ -1,13 +1,9 @@
 package com.lostfound.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users")  // Map to the 'users' table in PostgreSQL
+@Table(name = "users")
 public class User {
 
     @Id
@@ -16,16 +12,17 @@ public class User {
 
     private String name;
 
+    @Column(unique = true)
     private String email;
 
     private String phoneNumber;
 
-    private String password; // Store hashed password (you'll hash it before saving)
+    private String password;
 
-    // Default constructor (required by JPA)
+
     public User() {}
 
-    // Constructor with fields (except id, as it's auto-generated)
+
     public User(String name, String email, String phoneNumber, String password) {
         this.name = name;
         this.email = email;
@@ -33,7 +30,7 @@ public class User {
         this.password = password;
     }
 
-    // Getters and Setters for all fields
+
 
     public Long getId() {
         return id;

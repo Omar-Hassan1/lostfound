@@ -14,9 +14,6 @@ public class FoundItem {
     @Column(name = "item_name", nullable = false)
     private String itemName;
 
-    @Column(name = "description", length = 500)
-    private String description;
-
     @Column(name = "found_location")
     private String foundLocation;
 
@@ -34,14 +31,13 @@ public class FoundItem {
 
     public FoundItem(String itemName, String description, String foundLocation, LocalDateTime foundDate, String reporterName, String reporterContact) {
         this.itemName = itemName;
-        this.description = description;
         this.foundLocation = foundLocation;
         this.foundDate = foundDate;
         this.reporterName = reporterName;
         this.reporterContact = reporterContact;
     }
 
-    // Getters and setters
+
 
     public Long getId() {
         return id;
@@ -59,13 +55,6 @@ public class FoundItem {
         this.itemName = itemName;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getFoundLocation() {
         return foundLocation;

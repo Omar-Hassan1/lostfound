@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sign Up - Lost & Found</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        function navigate(page) {
+            window.location.href = page + ".html";
+        }
+
+        function handleSignup() {
+            alert("📝 Signup button clicked!");
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            alert("📤 Sending signup request to backend...");
+
+            fetch("http://localhost:8080/api/users/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    email: email,
+                    password: password
+                })
+            })
+                .then(response => {
+                    alert("✅ Got response from backend. Status: " + response.status);
+                    if (response.ok) {
+                        alert("🎉 Signup successful! Redirecting to login...");
+                        navigate("index");
+                    } else {
+                        alert("❌ Signup failed. Status: " + response.status);
+                        document.getElementById('signup-message').style.visibility = "visible";
+                    }
+                })
+                .catch(error => {
+                    alert("💥 ERROR: " + error);
+                    console.error("Signup error:", error);
+                    document.getElementById('signup-message').style.visibility = "visible";
+                });
+        }
+    </script>
+</head>
+<body>
+<header class="top-nav">
+    <div class="nav-left">Lost & Found</div>
+    <div class="nav-right">
+        <a href="#">About</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Help</a>
+    </div>
+</header>
+
+<div class="container">
+    <h1>Create Your Account</h1>
+    <div class="button-group">
+        <div class="login-container">
+            <input type="text" id="username" placeholder="Username" />
+            <input type="email" id="email" placeholder="Email" />
+            <input type="password" id="password" placeholder="Password" />
+            <input type="text" id="phone-number" placeholder="Phone Number"/>
+            <p id="signup-message" style="color: red; visibility: hidden;">Failed to sign up. Try again.</p>
+            <button onclick="handleSignup()">Sign Up</button>
+            <p style="padding-top: 100px;">Already have an account? <span onclick="navigate('index')" style="color:#007BFF; cursor:pointer; text-decoration:underline;">Login here</span>.</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Feedback</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        async function loadFeedback() {
+            const res = await fetch("http://localhost:8080/api/feedback");
+            const data = await res.json();
+            const list = document.getElementById("feedback-list");
+            list.innerHTML = "";
+            data.forEach(f => {
+                const item = document.createElement("div");
+                item.className = "feedback-item";
+                item.textContent = `${f.id}. ${f.name || "Anonymous"}: ${f.message}`;
+                list.appendChild(item);
+            });
+        }
+
+        async function submitFeedback() {
+            const name = document.getElementById("name").value.trim();
+            const message = document.getElementById("message").value.trim();
+            if (!message) return alert("⚠️ Boş mesaj gönderilmez.");
+
+            try {
+                const res = await fetch("http://localhost:8080/api/feedback", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ name, message })
+                });
+
+                if (res.ok) {
+                    alert("✅Feedback gönderildi!");
+                    document.getElementById("message").value = "";
+                    loadFeedback();
+                } else {
+                    alert("❌ Feedback gönderilemedi.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("💥 Bir hata oluştu.");
+            }
+        }
+
+        window.onload = loadFeedback;
+    </script>
+    <style>
+        .feedback-item {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<header class="top-nav">
+    <div class="nav-left">Lost & Found</div>
+    <div class="nav-right">
+        <a href="index.html">Login</a>
+        <a href="#">Feedback</a>
+    </div>
+</header>
+
+<div class="container">
+    <h1>Feedback</h1>
+
+    <div class="input-group">
+        <input type="text" id="name" placeholder="Your name (optional)" />
+        <input type="text" id="message" placeholder="Write your feedback here..." />
+        <button class="buttons" onclick="submitFeedback()">Send</button>
+    </div>
+
+    <div id="feedback-list" style="margin-top: 30px;"></div>
+</div>
+</body>
+</html>

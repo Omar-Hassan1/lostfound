@@ -37,7 +37,6 @@ public class LostItemServiceImpl implements LostItemService {
         return lostItemRepository.findById(id)
                 .map(item -> {
                     item.setItemName(updatedLostItem.getItemName());
-                    item.setDescription(updatedLostItem.getDescription());
                     item.setLostLocation(updatedLostItem.getLostLocation());
                     item.setLostDate(updatedLostItem.getLostDate());
                     item.setOwnerName(updatedLostItem.getOwnerName());

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Found Items</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .item-box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+    </style>
+    <script>
+        function fetchFoundItems() {
+            fetch("http://localhost:8080/api/found-items")
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("items-container");
+                    if (data.length === 0) {
+                        container.innerHTML = "<p>No found items available.</p>";
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const div = document.createElement("div");
+                        div.className = "item-box";
+                        div.innerHTML =
+                           ` <strong>Item:</strong> ${item.itemName}<br/>
+                        <strong>Found Location:</strong> ${item.foundLocation}<br/>
+                        <strong>Found Date:</strong> ${item.foundDate}<br/>
+                        <strong>Reported By:</strong> ${item.reporterName}<br/>
+                        <strong>Contact:</strong> ${item.reporterContact}<br/>
+                        <strong>Status:</strong> ${item.status}`
+                        ;
+                        container.appendChild(div);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error fetching found items:", err);
+                    document.getElementById("items-container").innerText = "💥 Failed to load found items.";
+                });
+        }
+
+        window.onload = fetchFoundItems;
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>All Found Items</h2>
+    <div id="items-container"></div>
+</div>
+</body>
+</html>

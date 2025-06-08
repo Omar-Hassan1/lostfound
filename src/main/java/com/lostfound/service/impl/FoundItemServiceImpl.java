@@ -37,7 +37,6 @@ public class FoundItemServiceImpl implements FoundItemService {
         return foundItemRepository.findById(id)
                 .map(item -> {
                     item.setItemName(updatedFoundItem.getItemName());
-                    item.setDescription(updatedFoundItem.getDescription());
                     item.setFoundLocation(updatedFoundItem.getFoundLocation());
                     item.setFoundDate(updatedFoundItem.getFoundDate());
                     item.setReporterName(updatedFoundItem.getReporterName());

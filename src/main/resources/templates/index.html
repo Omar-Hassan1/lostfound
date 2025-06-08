@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lost & Found Management</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        function navigate(page) {
+            window.location.href = page + ".html";
+        }
+
+        function handleLogin() {
+            alert("👀 Login button clicked!");
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            alert("📤 Sending login request to backend...");
+
+            fetch("http://localhost:8080/api/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email: username, password: password })
+            })
+                .then(response => {
+                    alert("✅ Got response from backend. Status: " + response.status);
+
+                    if (response.ok) {
+                        alert("🎉 Login successful!");
+                        localStorage.setItem("loggedIn", "true");
+                        navigate('home');
+                    } else {
+                        alert("❌ Login failed. Status: " + response.status);
+                        document.getElementById('login-message').style.visibility = "visible";
+                    }
+                })
+                .catch(error => {
+                    alert("💥 ERROR: " + error);
+                    console.error("Login error:", error);
+                    document.getElementById('login-message').style.visibility = "visible";
+                });
+        }
+
+    </script>
+</head>
+<body>
+<header class="top-nav">
+    <div class="nav-left">Lost & Found</div>
+    <div class="nav-right">
+        <a href="#">About</a>
+        <a href="#">Contact Us</a>
+        <a href="#">Help</a>
+    </div>
+</header>
+
+<div class="container">
+    <h1>Lost & Found Management System</h1>
+    <div class="button-group">
+        <div class="login-container">
+            <input type="text" id="username" placeholder="Username" />
+            <input type="password" id="password" placeholder="Password" />
+            <p id="login-message" style="color: red; visibility: hidden;">Invalid ID or Password, please try again.</p>
+            <button onclick="handleLogin()">Login</button>
+            <p style="padding-top: 100px;">Don't have an account? You can sign up from <span onclick="navigate('sign-up')" style="color:#007BFF; cursor:pointer; text-decoration:underline;">here</span>.</p>
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

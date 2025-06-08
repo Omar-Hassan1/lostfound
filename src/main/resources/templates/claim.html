@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lost & Found Management</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+        function requestClaim() {
+            const itemId = document.getElementById("item_id").value;
+            const phone = document.getElementById("phone_number").value;
+
+            if (!itemId || !phone) {
+                alert("❗ Please enter both Item ID and phone number.");
+                return;
+            }
+
+            // Check if item exists first
+            fetch(`http://localhost:8080/api/lost-items/${itemId}`)
+        .then(response => {
+                if (response.ok) {
+                    // Item exists, proceed with claim
+                    return response.json();
+                } else {
+                    throw new Error("Item not found");
+                }
+            })
+                .then(item => {
+                    // You can later also POST this claim to a "claims" endpoint
+                    alert(`✅ Claim Requested for "${item.itemName}". We will call you in 2 days.`);
+                })
+                .catch(error => {
+                    alert("❌ No item found with that ID.");
+                    console.error(error);
+                });
+        }
+    </script>
+
+</head>
+<body>
+
+<div class="container">
+
+    <div class="input-group">
+        <h2>Claim The Item</h2>
+        <div class="input-panel" style="display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin-top: 20px;">
+            <input type="text" id="item_id" placeholder="Item ID" />
+            <input type="text" id="phone_number" placeholder="Your Phone Number" />
+
+            <button class="buttons" onclick="requestClaim()">Request Claim</button>
+
+        </div>
+    </div>
+
+</div>
+</div>
+</body>
+</html>

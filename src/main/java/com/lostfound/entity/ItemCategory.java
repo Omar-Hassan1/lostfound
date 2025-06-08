@@ -18,17 +18,17 @@ public class ItemCategory {
 
     private String description;
 
-    // Default constructor (required by JPA)
+
     public ItemCategory() {
     }
 
-    // Constructor with all fields except id (id is auto-generated)
+
     public ItemCategory(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    // Getter and Setter methods
+
 
     public Long getId() {
         return id;

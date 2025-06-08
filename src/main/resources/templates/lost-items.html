@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lost & Found Management</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+        .item-box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+    </style>
+    <script>
+        function fetchLostItems() {
+            fetch("http://localhost:8080/api/lost-items")
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById("items-container");
+                    if (data.length === 0) {
+                        container.innerHTML = "<p>No lost items found.</p>";
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const div = document.createElement("div");
+                        div.className = "item-box";
+                        div.innerHTML =
+                            `<strong>Item:</strong> ${item.itemName}<br/>
+                        <strong>Owner:</strong> ${item.ownerName || "Unknown"}<br/>
+                        <strong>Date:</strong> ${item.lostDate}<br/>
+                        <strong>Location:</strong> ${item.location}<br/>
+                        <strong>Contact:</strong> ${item.contactInfo}<br/>
+                        <strong>Status:</strong> ${item.status}`
+                        ;
+                        container.appendChild(div);
+                    });
+                })
+                .catch(err => {
+                    console.error("Error fetching lost items:", err);
+                    document.getElementById("items-container").innerText = "💥 Failed to load lost items.";
+                });
+        }
+
+        window.onload = fetchLostItems;
+    </script>
+</head>
+<body>
+<div class="container">
+    <h2>All Lost Items</h2>
+    <div id="items-container"></div>
+</div>
+</body>
+</html>
